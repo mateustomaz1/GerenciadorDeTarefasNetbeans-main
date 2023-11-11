@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 
 public class TelaCadastroUsuario extends javax.swing.JFrame {
 
-    private static final String ARQUIVO_USUARIOS = "usuarios.json";
+    public static final String ARQUIVO_USUARIOS = "usuarios.json";
     public TelaCadastroUsuario() {
         initComponents();
     }

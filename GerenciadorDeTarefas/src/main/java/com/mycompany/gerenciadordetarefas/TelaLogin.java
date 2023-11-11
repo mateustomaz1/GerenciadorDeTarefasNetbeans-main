@@ -3,14 +3,20 @@ package com.mycompany.gerenciadordetarefas;
 
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
-
+import javax.swing.JOptionPane;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.IOException;
 
 public class TelaLogin extends javax.swing.JFrame {
 
     public TelaLogin() {
         initComponents();
     }
-
+    private static final String ARQUIVO_USUARIOS = "usuarios.json";
     @SuppressWarnings("unchecked")
 
     private void initComponents() {
@@ -83,50 +89,66 @@ public class TelaLogin extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
+
+
     private void jTextFieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioActionPerformed
-        
+
     }
 
-    private void jButtonEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEntrarActionPerformed
-        if(jTextFieldUsuario.getText().equals("tomaz")&&jPasswordFieldSenha.getText().equals("1234")){
-        TelaPrincipal tela = new TelaPrincipal();
-                            tela.setVisible(true);
-        dispose();
-        }else{
-            JOptionPane.showMessageDialog(rootPane,"Acesso Negado!");
+    private void jButtonEntrarActionPerformed(java.awt.event.ActionEvent evt) {
+        String usuario = jTextFieldUsuario.getText();
+        String senha = new String(jPasswordFieldSenha.getPassword());
+
+        // Lógica para validar o usuário e senha a partir de um arquivo JSON
+        try {
+            // Verifica se o arquivo de usuários existe
+            if (Files.exists(Paths.get(ARQUIVO_USUARIOS))) {
+                String usuariosJson = new String(Files.readAllBytes(Paths.get(ARQUIVO_USUARIOS)));
+                JSONArray usuariosArray = new JSONArray(usuariosJson);
+
+                // Verifica cada usuário no arquivo JSON
+                for (int i = 0; i < usuariosArray.length(); i++) {
+                    JSONObject usuarioObj = usuariosArray.getJSONObject(i);
+
+                    // Compara usuário e senha
+                    if (usuarioObj.getString("Usuario").equals(usuario) && usuarioObj.getString("Senha").equals(senha)) {
+                        // Se encontrado, exibe a TelaPrincipal e fecha a TelaLogin
+                        TelaPrincipal tela = new TelaPrincipal();
+                        tela.setVisible(true);
+                        dispose();
+                        return; // Sai do método se o usuário for válido
+                    }
+                }
+            }
+
+            // Exibe uma mensagem se a autenticação falhar
+            JOptionPane.showMessageDialog(rootPane, "Acesso Negado!");
+
+        } catch (IOException e) {
+            // Exibe uma mensagem de erro em caso de falha na leitura do arquivo JSON
+            JOptionPane.showMessageDialog(this, "Erro ao ler o arquivo JSON: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButtonEntrarActionPerformed
+    }
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
+        // Abre a tela de cadastro de usuários
+        TelaCadastroUsuario telaCadastro = new TelaCadastroUsuario();
+        telaCadastro.setVisible(true);
+    }
 
-    }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButtonSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSairActionPerformed
+
+    private void jButtonSairActionPerformed(java.awt.event.ActionEvent evt) {
         System.exit(0);
-    }//GEN-LAST:event_jButtonSairActionPerformed
+    }
 
-    private void jPasswordFieldSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordFieldSenhaKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER)
-        if(jTextFieldUsuario.getText().equals("tomaz")&&jPasswordFieldSenha.getText().equals("1234")){
-        TelaPrincipal tela = new TelaPrincipal();
-                            tela.setVisible(true);
-        dispose();
-        }else{
-            JOptionPane.showMessageDialog(rootPane,"Acesso Negado!");
-        }
-        
-        
-    }//GEN-LAST:event_jPasswordFieldSenhaKeyPressed
+    private void jPasswordFieldSenhaKeyPressed(java.awt.event.KeyEvent evt) {
 
-    /**
-     * @param args the command line arguments
-     */
+    }
+        
+
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Windows".equals(info.getName())) {
@@ -143,10 +165,7 @@ public class TelaLogin extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new TelaLogin().setVisible(true);
@@ -154,7 +173,6 @@ public class TelaLogin extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel blusuario;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButtonEntrar;
@@ -162,5 +180,5 @@ public class TelaLogin extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordFieldSenha;
     private javax.swing.JTextField jTextFieldUsuario;
     private javax.swing.JLabel lblsenha;
-    // End of variables declaration//GEN-END:variables
+
 }
