@@ -1,13 +1,10 @@
 
 package com.mycompany.gerenciadordetarefas;
 
-import java.awt.event.KeyEvent;
-import javax.swing.JOptionPane;
 import javax.swing.JOptionPane;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.IOException;
 
@@ -91,8 +88,7 @@ public class TelaLogin extends javax.swing.JFrame {
 
 
 
-    private void jTextFieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioActionPerformed
-
+    private void jTextFieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {
     }
 
     private void jButtonEntrarActionPerformed(java.awt.event.ActionEvent evt) {
