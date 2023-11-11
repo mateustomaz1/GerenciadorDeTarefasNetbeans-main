@@ -25,7 +25,7 @@ public class Tcadastro extends javax.swing.JFrame {
         buttonGroup2.add(jRadioButtonMedia);
         buttonGroup2.add(jRadioButtonAlta);
 
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -159,10 +159,10 @@ public class Tcadastro extends javax.swing.JFrame {
     }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
-            // Botão "Concluir"
-            cadastrarTarefa();
-            salvarTarefasEmJSON();
-            this.dispose(); // Fecha a janela de cadastro
+        // Botão "Concluir"
+        cadastrarTarefa();
+        salvarTarefasEmJSON();
+        this.dispose(); // Fecha a janela de cadastro
 
 
     }
