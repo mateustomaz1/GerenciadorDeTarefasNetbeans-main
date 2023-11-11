@@ -1,9 +1,16 @@
 [
   {
+    "titulo": "estudar",
+    "descricao": "esdutar mac",
+    "dataConclusao": "03/03/2004",
+    "concluida": true,
+    "importancia": "Baixa"
+  },
+  {
     "titulo": "poo",
     "descricao": "estudar poo",
     "dataConclusao": "03/03/2024",
-    "concluida": false,
-    "importancia": "Média"
+    "concluida": true,
+    "importancia": "Baixa"
   }
 ]

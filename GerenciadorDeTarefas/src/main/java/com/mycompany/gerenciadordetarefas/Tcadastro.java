@@ -3,6 +3,8 @@ package com.mycompany.gerenciadordetarefas;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
+
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
@@ -179,25 +181,17 @@ public class Tcadastro extends javax.swing.JFrame {
         tarefas.add(novaTarefa);
     }
 
-    private void salvarTarefasEmJSON() {
-        // Converte a lista de tarefas para formato JSON
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(tarefas);
-
-        // Salva o JSON em um arquivo
-        try (FileWriter writer = new FileWriter("tarefas.json")) {
-            writer.write(json);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     private void carregarTarefasDoJSON() {
         try (FileReader reader = new FileReader("tarefas.json")) {
+            // Use JsonReader.setLenient(true) para aceitar JSON malformado
+            JsonReader jsonReader = new JsonReader(reader);
+            jsonReader.setLenient(true);
+
             // Converte o JSON para a lista de tarefas
             Gson gson = new Gson();
-            tarefas = gson.fromJson(reader, ArrayList.class);
+            tarefas = gson.fromJson(jsonReader, ArrayList.class);
 
             // Se a lista estiver nula, inicializa uma nova lista
             if (tarefas == null) {
@@ -207,6 +201,7 @@ public class Tcadastro extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+
 
     private String obterImportanciaSelecionada() {
         if (jRadioButtonBaixa.isSelected()) {
@@ -236,6 +231,33 @@ public class Tcadastro extends javax.swing.JFrame {
             this.dataConclusao = dataConclusao;
             this.concluida = concluida;
             this.importancia = importancia;
+        }
+    }
+
+    private void salvarTarefasEmJSON() {
+        // Carrega as tarefas existentes do arquivo JSON
+        carregarTarefasDoJSON();
+
+        // Adiciona a nova tarefa à lista existente
+        Tarefa novaTarefa = new Tarefa(
+                jTextFieldTitulo.getText(),
+                jTextArea1.getText(),
+                jFormattedTextFieldData.getText(),
+                jRadioButtonConcluida.isSelected(),
+                obterImportanciaSelecionada()
+        );
+
+        tarefas.add(novaTarefa);
+
+        // Converte a lista atualizada para formato JSON
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(tarefas);
+
+        // Salva o JSON no arquivo
+        try (FileWriter writer = new FileWriter("tarefas.json")) {
+            writer.write(json);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
