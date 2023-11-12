@@ -13,6 +13,7 @@ public class TelaLogin extends javax.swing.JFrame {
     public TelaLogin() {
         initComponents();
     }
+    private static String usuarioLogado;
     private static final String ARQUIVO_USUARIOS = "usuarios.json";
     @SuppressWarnings("unchecked")
 
@@ -108,6 +109,9 @@ public class TelaLogin extends javax.swing.JFrame {
 
                     // Compara usuário e senha
                     if (usuarioObj.getString("Usuario").equals(usuario) && usuarioObj.getString("Senha").equals(senha)) {
+                        // Armazena o usuário logado
+                        usuarioLogado = usuario;
+
                         // Se encontrado, exibe a TelaPrincipal e fecha a TelaLogin
                         TelaPrincipal tela = new TelaPrincipal();
                         tela.setVisible(true);
@@ -125,6 +129,7 @@ public class TelaLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao ler o arquivo JSON: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
         // Abre a tela de cadastro de usuários

@@ -1,6 +1,13 @@
 
 package com.mycompany.gerenciadordetarefas;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import java.util.List;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class TelaPrincipal extends javax.swing.JFrame {
 
@@ -29,7 +36,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jList1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = {};
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -129,14 +136,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         setSize(new java.awt.Dimension(585, 330));
         setLocationRelativeTo(null);
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         System.exit(0);
     }
 
-    private void jButtonCriarTarefaActionPerformed(java.awt.event.ActionEvent evt) {
-    }
 
     private void jButtonEditarTarefaActionPerformed(java.awt.event.ActionEvent evt) {
 
@@ -149,10 +154,56 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jTextFieldBuscarTarefaActionPerformed(java.awt.event.ActionEvent evt) {
     }
 
-    private void jButtonRemoverTarefa1ActionPerformed(java.awt.event.ActionEvent evt) {
 
+
+    private void jButtonCriarTarefaActionPerformed(java.awt.event.ActionEvent evt) {
+        Tcadastro telaCadastro = new Tcadastro();
+        telaCadastro.setVisible(true);
     }
 
+    public class GerenciadorTarefas {
+
+        private static final String CAMINHO_ARQUIVO_JSON = "tarefas.json";
+
+        public static List<Tarefa> carregarTarefas() {
+            try (FileReader reader = new FileReader(CAMINHO_ARQUIVO_JSON)) {
+                TypeToken<List<Tarefa>> token = new TypeToken<List<Tarefa>>() {};
+                return new Gson().fromJson(reader, token.getType());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
+    public class Tarefa {
+
+        private String descricao;
+
+        // Outros campos e métodos necessários
+
+        public String getDescricao() {
+            return descricao;
+        }
+
+        public void setDescricao(String descricao) {
+            this.descricao = descricao;
+        }
+    }
+
+    private void jButtonRemoverTarefa1ActionPerformed(java.awt.event.ActionEvent evt) {
+        List<Tarefa> tarefas = GerenciadorTarefas.carregarTarefas();
+
+        if (tarefas != null) {
+            DefaultListModel<String> model = new DefaultListModel<>();
+            for (Tarefa tarefa : tarefas) {
+                model.addElement(tarefa.getDescricao());
+            }
+            jList1.setModel(model);
+        } else {
+            // Lógica de tratamento de erro, se necessário
+        }
+    }
     public static void main(String args[]) {
 
         try {
