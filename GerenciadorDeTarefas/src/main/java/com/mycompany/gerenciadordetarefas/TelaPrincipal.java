@@ -4,9 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import javax.swing.DefaultListModel;
-import java.util.List;
 import java.util.stream.Collectors;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -164,6 +162,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         telaCadastro.setVisible(true);
     }
 
+
+
     public class GerenciadorTarefas {
 
         private static final String CAMINHO_ARQUIVO_JSON = "tarefas.json";
@@ -189,6 +189,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         private String usuario;  // Adicione esta linha
         private String descricao;
 
+        private String titulo;  // Adicione esta linha
+
+        private String dataConclusao;  // Adicione esta linha
+
         // Outros campos e métodos necessários
 
         public String getDescricao() {
@@ -207,8 +211,26 @@ public class TelaPrincipal extends javax.swing.JFrame {
         public void setUsuario(String usuario) {
             this.usuario = usuario;
         }
+
+        public String getTitulo() {
+            return titulo;
+        }
+
+        // Adicione este método
+        public void setTitulo(String titulo) {
+            this.titulo = titulo;
+        }
+
+        public String getDataConclusao() {
+            return dataConclusao;
+        }
+
+        // Adicione este método
+        public void setDataConclusao(String dataConclusao) {
+            this.dataConclusao = dataConclusao;
+        }
     }
-    
+
 
     private void jButtonRemoverTarefa1ActionPerformed(java.awt.event.ActionEvent evt) {
         List<Tarefa> tarefas = GerenciadorTarefas.carregarTarefas(usuarioLogado);
@@ -216,13 +238,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
         if (tarefas != null) {
             DefaultListModel<String> model = new DefaultListModel<>();
             for (Tarefa tarefa : tarefas) {
-                model.addElement(tarefa.getDescricao());
+                // Adiciona título e data de conclusão à lista
+                model.addElement(tarefa.getDescricao() + " - " + tarefa.getTitulo() + " (Conclusão em: " + tarefa.getDataConclusao() + ")");
             }
             jList1.setModel(model);
         } else {
             // Lógica de tratamento de erro, se necessário
         }
     }
+
+
     public static void main(String args[]) {
 
         try {
