@@ -12,6 +12,11 @@ public class TelaLogin extends javax.swing.JFrame {
 
     public TelaLogin() {
         initComponents();
+        jPasswordFieldSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEntrarActionPerformed(evt);
+            }
+        });
     }
     public static String usuarioLogado;
     private static final String ARQUIVO_USUARIOS = "usuarios.json";

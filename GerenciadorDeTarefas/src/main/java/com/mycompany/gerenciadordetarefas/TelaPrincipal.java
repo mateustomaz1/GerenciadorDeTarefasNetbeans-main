@@ -146,6 +146,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButtonEditarTarefaActionPerformed(java.awt.event.ActionEvent evt) {
 
+
     }
 
     private void jButtonRemoverTarefaActionPerformed(java.awt.event.ActionEvent evt) {
@@ -168,6 +169,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         private static final String CAMINHO_ARQUIVO_JSON = "tarefas.json";
 
+
         public static List<Tarefa> carregarTarefas(String usuario) {
             try (FileReader reader = new FileReader(CAMINHO_ARQUIVO_JSON)) {
                 TypeToken<List<Tarefa>> token = new TypeToken<List<Tarefa>>() {};
@@ -184,6 +186,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         }
     }
+
+
 
     public class Tarefa {
         private String usuario;  // Adicione esta linha
@@ -239,7 +243,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             DefaultListModel<String> model = new DefaultListModel<>();
             for (Tarefa tarefa : tarefas) {
                 // Adiciona título e data de conclusão à lista
-                model.addElement(tarefa.getTitulo() + "" + tarefa.getDescricao() + " (Conclusão em: " + tarefa.getDataConclusao() + ")");
+                model.addElement(tarefa.getTitulo() + " - " + tarefa.getDescricao() + " (Conclusão em: " + tarefa.getDataConclusao() + ")");
             }
             jList1.setModel(model);
         } else {
