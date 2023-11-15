@@ -239,7 +239,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             DefaultListModel<String> model = new DefaultListModel<>();
             for (Tarefa tarefa : tarefas) {
                 // Adiciona título e data de conclusão à lista
-                model.addElement(tarefa.getDescricao() + " - " + tarefa.getTitulo() + " (Conclusão em: " + tarefa.getDataConclusao() + ")");
+                model.addElement(tarefa.getTitulo() + "" + tarefa.getDescricao() + " (Conclusão em: " + tarefa.getDataConclusao() + ")");
             }
             jList1.setModel(model);
         } else {

@@ -4,9 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 
-import java.io.FileWriter;
+import javax.swing.*;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -161,27 +166,57 @@ public class Tcadastro extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         // Botão "Concluir"
-        cadastrarTarefa(usuarioLogado);
-        salvarTarefasEmJSON(usuarioLogado);
-        this.dispose();
+        try {
+            cadastrarTarefa(usuarioLogado);
+            salvarTarefasEmJSON(usuarioLogado);
+            this.dispose();
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(this, "Formato de data inválido. Por favor, insira uma data válida.", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (DataInvalidaException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    private void cadastrarTarefa(String usuario) {
-        // Create a new task with the provided user information
+    private void cadastrarTarefa(String usuario) throws ParseException, DataInvalidaException {
+        // Cria uma nova tarefa com as informações fornecidas pelo usuário
         Tarefa novaTarefa = new Tarefa(
                 usuario,
                 jTextFieldTitulo.getText(),
                 jTextArea1.getText(),
-                jFormattedTextFieldData.getText(),
+                validarData(jFormattedTextFieldData.getText()),
                 jRadioButtonConcluida.isSelected(),
                 obterImportanciaSelecionada()
         );
 
-        // Add the new task to the list of tasks
+        // Adiciona a nova tarefa à lista de tarefas
         tarefas.add(novaTarefa);
+
+        // Exibe uma mensagem de sucesso
+        JOptionPane.showMessageDialog(this, "Tarefa cadastrada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    private String validarData(String data) throws ParseException, DataInvalidaException {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate date = LocalDate.parse(data, formatter);
 
+            // Verifica se a data é anterior à data atual
+            if (date.isBefore(LocalDate.now())) {
+                throw new DataInvalidaException("A data não pode ser anterior à data atual.");
+            }
+
+            // Formata a data para o padrão desejado
+            return formatter.format(date);
+        } catch (DateTimeParseException e) {
+            throw new ParseException("Formato de data inválido. Por favor, insira uma data válida.", 0);
+        }
+    }
+
+    public class DataInvalidaException extends Exception {
+        public DataInvalidaException(String mensagem) {
+            super(mensagem);
+        }
+    }
 
     private void carregarTarefasDoJSON() {
         try (FileReader reader = new FileReader("tarefas.json")) {
