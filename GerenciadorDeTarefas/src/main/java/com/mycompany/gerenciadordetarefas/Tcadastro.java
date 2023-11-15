@@ -1,4 +1,3 @@
-
 package com.mycompany.gerenciadordetarefas;
 
 import com.google.gson.Gson;
@@ -10,6 +9,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.mycompany.gerenciadordetarefas.TelaLogin.usuarioLogado;
 
 public class Tcadastro extends javax.swing.JFrame {
 
@@ -160,16 +161,15 @@ public class Tcadastro extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         // Botão "Concluir"
-        cadastrarTarefa();
-        salvarTarefasEmJSON();
-        this.dispose(); // Fecha a janela de cadastro
-
-
+        cadastrarTarefa(usuarioLogado);
+        salvarTarefasEmJSON(usuarioLogado);
+        this.dispose();
     }
 
-    private void cadastrarTarefa() {
-        // Cria uma nova tarefa com as informações fornecidas
+    private void cadastrarTarefa(String usuario) {
+        // Create a new task with the provided user information
         Tarefa novaTarefa = new Tarefa(
+                usuario,
                 jTextFieldTitulo.getText(),
                 jTextArea1.getText(),
                 jFormattedTextFieldData.getText(),
@@ -177,7 +177,7 @@ public class Tcadastro extends javax.swing.JFrame {
                 obterImportanciaSelecionada()
         );
 
-        // Adiciona a nova tarefa à lista de tarefas
+        // Add the new task to the list of tasks
         tarefas.add(novaTarefa);
     }
 
@@ -216,6 +216,7 @@ public class Tcadastro extends javax.swing.JFrame {
     }
 
     public class Tarefa {
+        private String usuario;
         private String titulo;
         private String descricao;
         private String dataConclusao;
@@ -225,7 +226,8 @@ public class Tcadastro extends javax.swing.JFrame {
         // Construtor e getters/setters aqui...
 
         // Exemplo de construtor:
-        public Tarefa(String titulo, String descricao, String dataConclusao, boolean concluida, String importancia) {
+        public Tarefa(String usuario, String titulo, String descricao, String dataConclusao, boolean concluida, String importancia) {
+            this.usuario = usuario;
             this.titulo = titulo;
             this.descricao = descricao;
             this.dataConclusao = dataConclusao;
@@ -234,12 +236,13 @@ public class Tcadastro extends javax.swing.JFrame {
         }
     }
 
-    private void salvarTarefasEmJSON() {
+    private void salvarTarefasEmJSON(String usuario) {
         // Carrega as tarefas existentes do arquivo JSON
         carregarTarefasDoJSON();
 
         // Adiciona a nova tarefa à lista existente
         Tarefa novaTarefa = new Tarefa(
+                usuario,
                 jTextFieldTitulo.getText(),
                 jTextArea1.getText(),
                 jFormattedTextFieldData.getText(),

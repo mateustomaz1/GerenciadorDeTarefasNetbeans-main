@@ -13,7 +13,7 @@ public class TelaLogin extends javax.swing.JFrame {
     public TelaLogin() {
         initComponents();
     }
-    private static String usuarioLogado;
+    public static String usuarioLogado;
     private static final String ARQUIVO_USUARIOS = "usuarios.json";
     @SuppressWarnings("unchecked")
 
