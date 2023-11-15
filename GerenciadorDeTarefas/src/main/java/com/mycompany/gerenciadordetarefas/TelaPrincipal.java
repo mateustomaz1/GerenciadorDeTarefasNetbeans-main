@@ -50,6 +50,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         jButtonCriarTarefa.setText("Criar Tarefa");
         jButtonCriarTarefa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,8 +160,49 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void jTextFieldBuscarTarefaActionPerformed(java.awt.event.ActionEvent evt) {
+        String termoBusca = jTextFieldBuscarTarefa.getText();
+
+        if (termoBusca != null && !termoBusca.isEmpty()) {
+            List<Tarefa> tarefas = GerenciadorTarefas.carregarTarefas(usuarioLogado);
+
+            if (tarefas != null) {
+                DefaultListModel<String> model = new DefaultListModel<>();
+                for (Tarefa tarefa : tarefas) {
+                    // Verifica se a descrição ou o título contêm o termo de busca
+                    if (tarefa.getDescricao().contains(termoBusca) || tarefa.getTitulo().contains(termoBusca)) {
+                        // Adiciona título e data de conclusão à lista
+                        model.addElement(tarefa.getTitulo() + " - " + tarefa.getDescricao() + " (Conclusão em: " + tarefa.getDataConclusao() + ")");
+                    }
+                }
+                jList1.setModel(model);
+            } else {
+                // Lógica de tratamento de erro, se necessário
+            }
+        }
     }
 
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+        String termoBusca = jTextFieldBuscarTarefa.getText();
+
+        if (termoBusca != null && !termoBusca.isEmpty()) {
+            List<Tarefa> tarefas = GerenciadorTarefas.carregarTarefas(usuarioLogado);
+
+            if (tarefas != null) {
+                DefaultListModel<String> model = new DefaultListModel<>();
+                for (Tarefa tarefa : tarefas) {
+                    // Verifica se a descrição ou o título contêm o termo de busca
+                    if (tarefa.getDescricao().contains(termoBusca) || tarefa.getTitulo().contains(termoBusca)) {
+                        // Adiciona título e data de conclusão à lista
+                        model.addElement(tarefa.getTitulo() + " - " + tarefa.getDescricao() + " (Conclusão em: " + tarefa.getDataConclusao() + ")");
+                    }
+                }
+                jList1.setModel(model);
+            } else {
+                // Lógica de tratamento de erro, se necessário
+            }
+        }
+    }
 
 
     private void jButtonCriarTarefaActionPerformed(java.awt.event.ActionEvent evt) {
@@ -186,6 +233,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         }
     }
+
+
+
 
 
 
