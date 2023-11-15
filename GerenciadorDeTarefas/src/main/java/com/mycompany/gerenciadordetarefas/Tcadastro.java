@@ -156,7 +156,7 @@ public class Tcadastro extends javax.swing.JFrame {
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-
+            this.dispose(); // Fecha a janela ao clicar no botão "Voltar"
     }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {

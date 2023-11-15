@@ -5,8 +5,12 @@ import java.io.IOException;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import static com.mycompany.gerenciadordetarefas.TelaLogin.usuarioLogado;
 
 public class TelaPrincipal extends javax.swing.JFrame {
 
@@ -164,10 +168,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         private static final String CAMINHO_ARQUIVO_JSON = "tarefas.json";
 
-        public static List<Tarefa> carregarTarefas() {
+        public static List<Tarefa> carregarTarefas(String usuario) {
             try (FileReader reader = new FileReader(CAMINHO_ARQUIVO_JSON)) {
                 TypeToken<List<Tarefa>> token = new TypeToken<List<Tarefa>>() {};
-                return new Gson().fromJson(reader, token.getType());
+                List<Tarefa> todasAsTarefas = new Gson().fromJson(reader, token.getType());
+
+                // Filtra as tarefas do usuário
+                return todasAsTarefas.stream()
+                        .filter(tarefa -> tarefa.getUsuario().equals(usuario))
+                        .collect(Collectors.toList());
+
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -176,7 +186,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     public class Tarefa {
-
+        private String usuario;  // Adicione esta linha
         private String descricao;
 
         // Outros campos e métodos necessários
@@ -188,10 +198,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
         public void setDescricao(String descricao) {
             this.descricao = descricao;
         }
+
+        public String getUsuario() {
+            return usuario;
+        }
+
+        // Adicione este método
+        public void setUsuario(String usuario) {
+            this.usuario = usuario;
+        }
     }
+    
 
     private void jButtonRemoverTarefa1ActionPerformed(java.awt.event.ActionEvent evt) {
-        List<Tarefa> tarefas = GerenciadorTarefas.carregarTarefas();
+        List<Tarefa> tarefas = GerenciadorTarefas.carregarTarefas(usuarioLogado);
 
         if (tarefas != null) {
             DefaultListModel<String> model = new DefaultListModel<>();
