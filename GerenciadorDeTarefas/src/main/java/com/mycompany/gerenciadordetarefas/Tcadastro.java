@@ -20,10 +20,8 @@ import static com.mycompany.gerenciadordetarefas.TelaLogin.usuarioLogado;
 public class Tcadastro extends javax.swing.JFrame {
 
 
-    private List<Tarefa> tarefas;
     public Tcadastro() {
 
-        tarefas = new ArrayList<>();
         initComponents();
         buttonGroup1.add(jRadioButtonNaoConcluida);
         buttonGroup1.add(jRadioButtonConcluida);
@@ -161,143 +159,12 @@ public class Tcadastro extends javax.swing.JFrame {
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-            this.dispose(); // Fecha a janela ao clicar no botão "Voltar"
+
     }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
-        // Botão "Concluir"
-        try {
-            cadastrarTarefa(usuarioLogado);
-            salvarTarefasEmJSON(usuarioLogado);
-            this.dispose();
-        } catch (ParseException e) {
-            JOptionPane.showMessageDialog(this, "Formato de data inválido. Por favor, insira uma data válida.", "Erro", JOptionPane.ERROR_MESSAGE);
-        } catch (DataInvalidaException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        }
     }
 
-    private void cadastrarTarefa(String usuario) throws ParseException, DataInvalidaException {
-        // Cria uma nova tarefa com as informações fornecidas pelo usuário
-        Tarefa novaTarefa = new Tarefa(
-                usuario,
-                jTextFieldTitulo.getText(),
-                jTextArea1.getText(),
-                validarData(jFormattedTextFieldData.getText()),
-                jRadioButtonConcluida.isSelected(),
-                obterImportanciaSelecionada()
-        );
-
-        // Adiciona a nova tarefa à lista de tarefas
-        tarefas.add(novaTarefa);
-
-        // Exibe uma mensagem de sucesso
-        JOptionPane.showMessageDialog(this, "Tarefa cadastrada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    private String validarData(String data) throws ParseException, DataInvalidaException {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate date = LocalDate.parse(data, formatter);
-
-            // Verifica se a data é anterior à data atual
-            if (date.isBefore(LocalDate.now())) {
-                throw new DataInvalidaException("A data não pode ser anterior à data atual.");
-            }
-
-            // Formata a data para o padrão desejado
-            return formatter.format(date);
-        } catch (DateTimeParseException e) {
-            throw new ParseException("Formato de data inválido. Por favor, insira uma data válida.", 0);
-        }
-    }
-
-    public class DataInvalidaException extends Exception {
-        public DataInvalidaException(String mensagem) {
-            super(mensagem);
-        }
-    }
-
-    private void carregarTarefasDoJSON() {
-        try (FileReader reader = new FileReader("tarefas.json")) {
-            // Use JsonReader.setLenient(true) para aceitar JSON malformado
-            JsonReader jsonReader = new JsonReader(reader);
-            jsonReader.setLenient(true);
-
-            // Converte o JSON para a lista de tarefas
-            Gson gson = new Gson();
-            tarefas = gson.fromJson(jsonReader, ArrayList.class);
-
-            // Se a lista estiver nula, inicializa uma nova lista
-            if (tarefas == null) {
-                tarefas = new ArrayList<>();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private String obterImportanciaSelecionada() {
-        if (jRadioButtonBaixa.isSelected()) {
-            return "Baixa";
-        } else if (jRadioButtonMedia.isSelected()) {
-            return "Média";
-        } else if (jRadioButtonAlta.isSelected()) {
-            return "Alta";
-        } else {
-            return ""; // Valor padrão, se nenhum estiver selecionado
-        }
-    }
-
-    public class Tarefa {
-        private String usuario;
-        private String titulo;
-        private String descricao;
-        private String dataConclusao;
-        private boolean concluida;
-        private String importancia;
-
-        // Construtor e getters/setters aqui...
-
-        // Exemplo de construtor:
-        public Tarefa(String usuario, String titulo, String descricao, String dataConclusao, boolean concluida, String importancia) {
-            this.usuario = usuario;
-            this.titulo = titulo;
-            this.descricao = descricao;
-            this.dataConclusao = dataConclusao;
-            this.concluida = concluida;
-            this.importancia = importancia;
-        }
-    }
-
-    private void salvarTarefasEmJSON(String usuario) {
-        // Carrega as tarefas existentes do arquivo JSON
-        carregarTarefasDoJSON();
-
-        // Adiciona a nova tarefa à lista existente
-        Tarefa novaTarefa = new Tarefa(
-                usuario,
-                jTextFieldTitulo.getText(),
-                jTextArea1.getText(),
-                jFormattedTextFieldData.getText(),
-                jRadioButtonConcluida.isSelected(),
-                obterImportanciaSelecionada()
-        );
-
-        tarefas.add(novaTarefa);
-
-        // Converte a lista atualizada para formato JSON
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(tarefas);
-
-        // Salva o JSON no arquivo
-        try (FileWriter writer = new FileWriter("tarefas.json")) {
-            writer.write(json);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void main(String args[]) {
 
@@ -319,7 +186,6 @@ public class Tcadastro extends javax.swing.JFrame {
         }
 
         Tcadastro tcadastro = new Tcadastro();
-        tcadastro.carregarTarefasDoJSON();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Tcadastro().setVisible(true);

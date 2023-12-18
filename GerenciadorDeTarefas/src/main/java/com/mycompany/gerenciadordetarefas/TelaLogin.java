@@ -2,8 +2,10 @@
 package com.mycompany.gerenciadordetarefas;
 
 import javax.swing.JOptionPane;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.IOException;
@@ -18,8 +20,10 @@ public class TelaLogin extends javax.swing.JFrame {
             }
         });
     }
+
     public static String usuarioLogado;
     private static final String ARQUIVO_USUARIOS = "usuarios.json";
+
     @SuppressWarnings("unchecked")
 
     private void initComponents() {
@@ -93,65 +97,27 @@ public class TelaLogin extends javax.swing.JFrame {
     }
 
 
-
     private void jTextFieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {
     }
 
     private void jButtonEntrarActionPerformed(java.awt.event.ActionEvent evt) {
-        String usuario = jTextFieldUsuario.getText();
-        String senha = new String(jPasswordFieldSenha.getPassword());
 
-        // Lógica para validar o usuário e senha a partir de um arquivo JSON
-        try {
-            // Verifica se o arquivo de usuários existe
-            if (Files.exists(Paths.get(ARQUIVO_USUARIOS))) {
-                String usuariosJson = new String(Files.readAllBytes(Paths.get(ARQUIVO_USUARIOS)));
-                JSONArray usuariosArray = new JSONArray(usuariosJson);
-
-                // Verifica cada usuário no arquivo JSON
-                for (int i = 0; i < usuariosArray.length(); i++) {
-                    JSONObject usuarioObj = usuariosArray.getJSONObject(i);
-
-                    // Compara usuário e senha
-                    if (usuarioObj.getString("Usuario").equals(usuario) && usuarioObj.getString("Senha").equals(senha)) {
-                        // Armazena o usuário logado
-                        usuarioLogado = usuario;
-
-                        // Se encontrado, exibe a TelaPrincipal e fecha a TelaLogin
-                        TelaPrincipal tela = new TelaPrincipal();
-                        tela.setVisible(true);
-                        dispose();
-                        return; // Sai do método se o usuário for válido
-                    }
-                }
-            }
-
-            // Exibe uma mensagem se a autenticação falhar
-            JOptionPane.showMessageDialog(rootPane, "Acesso Negado!");
-
-        } catch (IOException e) {
-            // Exibe uma mensagem de erro em caso de falha na leitura do arquivo JSON
-            JOptionPane.showMessageDialog(this, "Erro ao ler o arquivo JSON: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        }
     }
 
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
-        // Abre a tela de cadastro de usuários
-        TelaCadastroUsuario telaCadastro = new TelaCadastroUsuario();
-        telaCadastro.setVisible(true);
+
     }
 
 
-
     private void jButtonSairActionPerformed(java.awt.event.ActionEvent evt) {
-        System.exit(0);
+
     }
 
     private void jPasswordFieldSenhaKeyPressed(java.awt.event.KeyEvent evt) {
 
     }
-        
+
 
     public static void main(String args[]) {
 

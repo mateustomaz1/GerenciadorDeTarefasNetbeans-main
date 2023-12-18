@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import java.util.stream.Collectors;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,8 +39,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jList1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = {};
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+
+            public int getSize() {
+                return strings.length;
+            }
+
+            public String getElementAt(int i) {
+                return strings[i];
+            }
         });
         jScrollPane2.setViewportView(jList1);
 
@@ -154,123 +161,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void jTextFieldBuscarTarefaActionPerformed(java.awt.event.ActionEvent evt) {
-        String termoBusca = jTextFieldBuscarTarefa.getText();
 
-        if (termoBusca != null && !termoBusca.isEmpty()) {
-            List<Tarefa> tarefas = GerenciadorTarefas.carregarTarefas(usuarioLogado);
-
-            if (tarefas != null) {
-                DefaultListModel<String> model = new DefaultListModel<>();
-                for (Tarefa tarefa : tarefas) {
-                    // Verifica se a descrição ou o título contêm o termo de busca
-                    if (tarefa.getDescricao().contains(termoBusca) || tarefa.getTitulo().contains(termoBusca)) {
-                        // Adiciona título e data de conclusão à lista
-                        model.addElement(tarefa.getTitulo() + " - " + tarefa.getDescricao() + " (Conclusão em: " + tarefa.getDataConclusao() + ")");
-                    }
-                }
-                jList1.setModel(model);
-            } else {
-                // Lógica de tratamento de erro, se necessário
-            }
-        }
     }
-
 
 
     private void jButtonCriarTarefaActionPerformed(java.awt.event.ActionEvent evt) {
-        Tcadastro telaCadastro = new Tcadastro();
-        telaCadastro.setVisible(true);
-    }
 
-
-
-    public class GerenciadorTarefas {
-
-        private static final String CAMINHO_ARQUIVO_JSON = "tarefas.json";
-
-
-        public static List<Tarefa> carregarTarefas(String usuario) {
-            try (FileReader reader = new FileReader(CAMINHO_ARQUIVO_JSON)) {
-                TypeToken<List<Tarefa>> token = new TypeToken<List<Tarefa>>() {};
-                List<Tarefa> todasAsTarefas = new Gson().fromJson(reader, token.getType());
-
-                // Filtra as tarefas do usuário
-                return todasAsTarefas.stream()
-                        .filter(tarefa -> tarefa.getUsuario().equals(usuario))
-                        .collect(Collectors.toList());
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-    }
-
-
-
-
-
-
-    public class Tarefa {
-        private String usuario;  // Adicione esta linha
-        private String descricao;
-
-        private String titulo;  // Adicione esta linha
-
-        private String dataConclusao;  // Adicione esta linha
-
-        // Outros campos e métodos necessários
-
-        public String getDescricao() {
-            return descricao;
-        }
-
-        public void setDescricao(String descricao) {
-            this.descricao = descricao;
-        }
-
-        public String getUsuario() {
-            return usuario;
-        }
-
-        // Adicione este método
-        public void setUsuario(String usuario) {
-            this.usuario = usuario;
-        }
-
-        public String getTitulo() {
-            return titulo;
-        }
-
-        // Adicione este método
-        public void setTitulo(String titulo) {
-            this.titulo = titulo;
-        }
-
-        public String getDataConclusao() {
-            return dataConclusao;
-        }
-
-        // Adicione este método
-        public void setDataConclusao(String dataConclusao) {
-            this.dataConclusao = dataConclusao;
-        }
     }
 
 
     private void jButtonRemoverTarefa1ActionPerformed(java.awt.event.ActionEvent evt) {
-        List<Tarefa> tarefas = GerenciadorTarefas.carregarTarefas(usuarioLogado);
 
-        if (tarefas != null) {
-            DefaultListModel<String> model = new DefaultListModel<>();
-            for (Tarefa tarefa : tarefas) {
-                // Adiciona título e data de conclusão à lista
-                model.addElement(tarefa.getTitulo() + " - " + tarefa.getDescricao() + " (Conclusão em: " + tarefa.getDataConclusao() + ")");
-            }
-            jList1.setModel(model);
-        } else {
-            // Lógica de tratamento de erro, se necessário
-        }
     }
 
 

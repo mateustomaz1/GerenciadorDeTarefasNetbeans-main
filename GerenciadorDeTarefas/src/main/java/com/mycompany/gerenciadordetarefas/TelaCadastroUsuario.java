@@ -3,6 +3,7 @@ package com.mycompany.gerenciadordetarefas;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.nio.file.Paths;
 public class TelaCadastroUsuario extends javax.swing.JFrame {
 
     public static final String ARQUIVO_USUARIOS = "usuarios.json";
+
     public TelaCadastroUsuario() {
         initComponents();
     }
@@ -78,66 +80,23 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
 
 
     private void jButtonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {
-        String usuario = jTextFieldCriarUsuario.getText();
-        String senha = new String(jPasswordFieldCriarSenha.getPassword());
 
-        // Lógica para criar ou atualizar um arquivo JSON com o nome do usuário e a senha
-        try {
-            JSONArray usuariosArray;
-
-            // Verifica se o arquivo já existe
-            if (Files.exists(Paths.get(ARQUIVO_USUARIOS))) {
-                String usuariosJson = new String(Files.readAllBytes(Paths.get(ARQUIVO_USUARIOS)));
-                usuariosArray = new JSONArray(usuariosJson);
-            } else {
-                usuariosArray = new JSONArray();
-            }
-
-            // Cria um objeto JSON para o novo usuário
-            JSONObject novoUsuario = new JSONObject();
-            novoUsuario.put("Usuario", usuario);
-            novoUsuario.put("Senha", senha);
-
-            // Adiciona o novo usuário ao array
-            usuariosArray.put(novoUsuario);
-
-            // Escreve o array atualizado de usuários no arquivo JSON
-            Files.write(Paths.get(ARQUIVO_USUARIOS), usuariosArray.toString().getBytes());
-
-            // Exibe uma mensagem de sucesso
-            JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
-
-            // Limpa os campos após o cadastro
-            jTextFieldCriarUsuario.setText("");
-            jPasswordFieldCriarSenha.setText("");
-
-        } catch (IOException e) {
-            // Exibe uma mensagem de erro em caso de falha
-            JOptionPane.showMessageDialog(this, "Erro ao criar/atualizar o arquivo JSON: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        }
     }
 
 
     private void jTextFieldCriarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {
-        // Lógica para o campo de usuário, se necessário
     }
 
 
     private void jButtonVoltarActionPerformed(java.awt.event.ActionEvent evt) {
-        // Fechar a janela ao clicar em Voltar
-        this.dispose();
+
     }
 
 
     private void jPasswordFieldCriarSenhaKeyPressed(java.awt.event.KeyEvent evt) {
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            // Se a tecla Enter for pressionada no campo de senha, realizar o cadastro
-            jButtonCadastrarActionPerformed(null);
-        }
     }
 
     public static void main(String args[]) {
-        // Aqui você pode iniciar a janela
 
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
